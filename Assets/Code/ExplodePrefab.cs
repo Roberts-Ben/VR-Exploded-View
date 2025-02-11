@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -18,7 +16,8 @@ public class ExplodePrefab : MonoBehaviour
 
     private XRGrabInteractable grabInteractable;
 
-    public List<GameObject> gameObjects = new();
+    public Renderer[] allRenderers;
+
     public List<Material> defaultMaterials = new();
     public Material hoverMaterial;
     public Material grabbedMaterial;
@@ -31,6 +30,7 @@ public class ExplodePrefab : MonoBehaviour
     private void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
+
         grabInteractable.hoverEntered.AddListener(OnHoverEnter);
         grabInteractable.hoverExited.AddListener(OnHoverExit);
         grabInteractable.selectEntered.AddListener(OnTriggerGrab);
@@ -39,7 +39,7 @@ public class ExplodePrefab : MonoBehaviour
 
     private void Start()
     {
-        boxCollider = transform.GetComponent<BoxCollider>();
+        boxCollider = transform.GetComponent<BoxCollider>(); // Try GetCollider?
 
         if (boxCollider == null)
         {
@@ -49,36 +49,50 @@ public class ExplodePrefab : MonoBehaviour
 
         startPosition = transform.position;
         startRotation = transform.rotation;
-        explodePosition = startPosition + Random.onUnitSphere * 0.2f;
 
         defaultMaterials = GetComponentInChildren<Renderer>().materials.ToList();
-        foreach (Transform tr in transform.GetComponentsInChildren<Transform>())
-        {
-            gameObjects.Add(tr.gameObject);
-        }
 
-        StartCoroutine(Explode());
+        allRenderers = GetComponentsInChildren<Renderer>();
+    }
+
+    private void Update()
+    {
+        Vector2 input = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
+        Vector3 rotationVector = 1f * Time.deltaTime * new Vector3(0, input.x, input.y);
+        transform.Rotate(rotationVector, Space.Self);
     }
 
     private void OnHoverEnter(BaseInteractionEventArgs arg)
     {
-        for (int i = 0; i < gameObjects.Count; i++)
+        for(int i = 0; i < allRenderers.Length; i++)
         {
-            gameObjects[i].GetComponent<Renderer>().material = hoverMaterial;
+            Renderer tempR = allRenderers[i];
+            Material[] tempM = tempR.materials;
+            for(int j = 0; j < tempM.Length; j++)
+            {
+                tempM[j] = hoverMaterial;
+            }
+            tempR.materials = tempM;
         }
     }
 
     private void OnHoverExit(BaseInteractionEventArgs arg)
     {
-        for(int i = 0; i < gameObjects.Count; i++)
+        for (int i = 0; i < allRenderers.Length; i++)
         {
-            gameObjects[i].GetComponent<Renderer>().material = defaultMaterials[i];
+            Renderer tempR = allRenderers[i];
+            Material[] tempM = tempR.materials;
+            for (int j = 0; j < tempM.Length; j++)
+            {
+                tempM[j] = defaultMaterials[j];
+            }
+            tempR.materials = tempM;
         }
     }
 
     private void OnTriggerRelease(BaseInteractionEventArgs arg)
     {
-        if(Vector3.Distance(transform.position, startPosition) < 0.1f)
+        if(Vector3.Distance(transform.position, startPosition) < 0.1f && Quaternion.Angle(transform.rotation, startRotation) < 0.5f)
         {
             transform.SetPositionAndRotation(startPosition, startRotation);
             if(!correctlyPlaced)
@@ -97,9 +111,15 @@ public class ExplodePrefab : MonoBehaviour
         {
             meshCollider.isTrigger = false;
         }
-        for (int i = 0; i < gameObjects.Count; i++)
+        for (int i = 0; i < allRenderers.Length; i++)
         {
-            gameObjects[i].GetComponent<Renderer>().material = hoverMaterial;
+            Renderer tempR = allRenderers[i];
+            Material[] tempM = tempR.materials;
+            for (int j = 0; j < tempM.Length; j++)
+            {
+                tempM[j] = hoverMaterial;
+            }
+            tempR.materials = tempM;
         }
     }
 
@@ -113,17 +133,40 @@ public class ExplodePrefab : MonoBehaviour
         {
             meshCollider.isTrigger = true;
         }
-        for (int i = 0; i < gameObjects.Count; i++)
+
+        StartCoroutine(SelectMaterialUpdate());
+    }
+    IEnumerator SelectMaterialUpdate()
+    {
+        yield return new WaitForSeconds(0.01f);
+        for (int i = 0; i < allRenderers.Length; i++)
         {
-            gameObjects[i].GetComponent<Renderer>().material = grabbedMaterial;
+            Renderer tempR = allRenderers[i];
+            Material[] tempM = tempR.materials;
+            for (int j = 0; j < tempM.Length; j++)
+            {
+                tempM[j] = grabbedMaterial;
+            }
+            tempR.materials = tempM;
         }
     }
 
-    IEnumerator Explode()
+    public void Explode()
+    {
+        explodePosition = startPosition + new Vector3(Random.Range(-0.7f, 0.7f), Random.Range(-0.1f, 0.8f), 0);
+        StartCoroutine(ExplodeMove());
+    }
+
+    public void Reset()
+    {
+        transform.SetPositionAndRotation(startPosition, startRotation);
+    }
+
+    IEnumerator ExplodeMove()
     {
         while (Vector3.Distance(transform.position, explodePosition) > Mathf.Epsilon)
         {
-            float distanceToMove = Time.deltaTime * 1f;
+            float distanceToMove = Time.deltaTime * 0.5f;
 
             transform.position = Vector3.MoveTowards(transform.position, explodePosition, distanceToMove);
 
