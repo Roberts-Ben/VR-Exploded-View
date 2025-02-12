@@ -26,9 +26,4 @@ public class GameManager : MonoBehaviour
         var devicesLog = inputDevices.Count == 0 ? "" : inputDevices.Select(x => x.name).Aggregate((a, b) => $"{a}, {b}");
         Debug.Log($"[F:{Time.frameCount}] {inputDevices.Count} input devices found. ( {devicesLog} )");
     }
-
-    void Update()
-    {
-        
-    }
 }

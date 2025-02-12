@@ -22,6 +22,9 @@ public class BuiltObject : MonoBehaviour
 
     private XRGrabInteractable grabInteractable;
 
+    public Vector3 startPosition;
+    public Quaternion startRotation;
+
     void Awake()
     {
         if(instance == null)
@@ -41,6 +44,12 @@ public class BuiltObject : MonoBehaviour
         grabInteractable.hoverExited.AddListener(OnHoverExit);
         grabInteractable.selectEntered.AddListener(OnTriggerGrab);
         grabInteractable.selectExited.AddListener(OnTriggerRelease);
+    }
+
+    private void Start()
+    {
+        startPosition = transform.position;
+        startRotation = transform.rotation;
     }
 
     private void CreateReferenceList(Transform obj, bool isGhost)
@@ -79,7 +88,7 @@ public class BuiltObject : MonoBehaviour
 
     private void OnTriggerRelease(SelectExitEventArgs arg0)
     {
-        
+        transform.SetPositionAndRotation(startPosition, startRotation);
     }
 
     private void OnTriggerGrab(SelectEnterEventArgs arg0)
@@ -128,7 +137,6 @@ public class BuiltObject : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     public void AttachToObject(GameObject newObject)
     {
         grabInteractable.colliders.Add(newObject.GetComponent<Collider>());
@@ -137,7 +145,7 @@ public class BuiltObject : MonoBehaviour
 
         if (assembledObjects.Count == interactableObjects.Count)
         {
-            // Assembly complete
+            Debug.Log("Assembled!");
         }
     }
 }

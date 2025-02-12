@@ -17,6 +17,7 @@ public class ExplodePrefab : MonoBehaviour
     private XRGrabInteractable grabInteractable;
 
     public Renderer[] allRenderers;
+    public Renderer[] allGhostRenderers;
 
     public List<Material> defaultMaterials = new();
     public Material hoverMaterial;
@@ -29,7 +30,7 @@ public class ExplodePrefab : MonoBehaviour
     private MeshCollider meshCollider;
 
     private int objIndex;
-    public Renderer targetGhostRenderer;
+    public Transform targetGhost;
 
     private void Awake()
     {
@@ -54,12 +55,19 @@ public class ExplodePrefab : MonoBehaviour
         startPosition = transform.position;
         startRotation = transform.rotation;
 
-        defaultMaterials = GetComponentInChildren<Renderer>().materials.ToList();
+        objIndex = BuiltObject.instance.interactableObjects.IndexOf(this.transform);
+        targetGhost = BuiltObject.instance.ghostObjects[objIndex];
 
         allRenderers = GetComponentsInChildren<Renderer>();
-
-        objIndex = BuiltObject.instance.interactableObjects.IndexOf(this.transform);
-        targetGhostRenderer = BuiltObject.instance.ghostObjects[objIndex].GetComponent<Renderer>();
+        allGhostRenderers = targetGhost.GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in allRenderers)
+        {
+            List<Material> materialsToAdd = r.GetComponent<Renderer>().materials.ToList();
+            foreach (Material m in materialsToAdd)
+            {
+                defaultMaterials.Add(m);
+            }  
+        } 
     }
 
     private void Update()
@@ -99,17 +107,22 @@ public class ExplodePrefab : MonoBehaviour
 
     private void OnTriggerRelease(BaseInteractionEventArgs arg)
     {
-        if (Vector3.Distance(transform.position, startPosition) < 0.1f && Quaternion.Angle(transform.rotation, startRotation) < 25f)
+        if (!correctlyPlaced)
         {
-            transform.SetPositionAndRotation(startPosition, startRotation);
-            if(!correctlyPlaced)
+            Debug.LogWarning(Quaternion.Angle(transform.rotation, startRotation));
+            if (Vector3.Distance(transform.position, startPosition) < 0.1f && Quaternion.Angle(transform.rotation, startRotation) < 45f)
             {
                 BuiltObject.instance.AttachToObject(gameObject);
                 correctlyPlaced = true;
-                grabInteractable.selectEntered.RemoveAllListeners();
-                grabInteractable.selectExited.RemoveAllListeners();
+                transform.SetPositionAndRotation(startPosition, startRotation);
+
+                Destroy(GetComponent<XRGrabInteractable>());
+                Destroy(GetComponent<Rigidbody>());
+                Destroy(GetComponent<MeshCollider>());
+                Destroy(GetComponent<BoxCollider>());
             }
         }
+
         if (!hasMeshCollider)
         {
             boxCollider.isTrigger = false;
@@ -129,7 +142,16 @@ public class ExplodePrefab : MonoBehaviour
             tempR.materials = tempM;
         }
 
-        targetGhostRenderer.material = ghostMaterial;
+        for (int i = 0; i < allGhostRenderers.Length; i++)
+        {
+            Renderer tempR = allGhostRenderers[i];
+            Material[] tempM = tempR.materials;
+            for (int j = 0; j < tempM.Length; j++)
+            {
+                tempM[j] = ghostMaterial;
+            }
+            tempR.materials = tempM;
+        }
     }
 
     private void OnTriggerGrab(BaseInteractionEventArgs arg)
@@ -143,7 +165,16 @@ public class ExplodePrefab : MonoBehaviour
             meshCollider.isTrigger = true;
         }
 
-        targetGhostRenderer.material = hoverTargetMaterial; // Doesn't work on children
+        for (int i = 0; i < allGhostRenderers.Length; i++)
+        {
+            Renderer tempR = allGhostRenderers[i];
+            Material[] tempM = tempR.materials;
+            for (int j = 0; j < tempM.Length; j++)
+            {
+                tempM[j] = hoverTargetMaterial;
+            }
+            tempR.materials = tempM;
+        }
         StartCoroutine(SelectMaterialUpdate());
     }
     IEnumerator SelectMaterialUpdate()
