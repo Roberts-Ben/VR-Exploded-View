@@ -523,6 +523,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &5836610486582884393
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -889,6 +891,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &8024803503881649501
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1782,6 +1786,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &4557542023355660438
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2097,6 +2103,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &1159627591452228023
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2375,6 +2383,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &486439029294254499
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2698,6 +2708,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &3424472301603183686
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3262,6 +3274,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &5833956252072837069
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3872,6 +3886,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &8300514232964418588
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4187,6 +4203,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &7999132515265545392
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4801,6 +4819,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &3356319434925342163
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5496,6 +5516,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &899985939298897239
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5951,6 +5973,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &2256910584152553947
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6182,6 +6206,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &667408534972292068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6460,6 +6486,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &1717208756925149758
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7520,6 +7548,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &3634979188970366557
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8132,6 +8162,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &6617867510858549000
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8661,6 +8693,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &3328236135661910473
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9356,6 +9390,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &1590871430202663829
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9639,6 +9675,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &4595641432080566837
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10867,6 +10905,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &6136184888882725201
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11272,6 +11312,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &6449367603482062188
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11638,6 +11680,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &324152796446899595
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11954,6 +11998,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &4656256055596822369
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12399,6 +12445,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &2290566538782042068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13675,6 +13723,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &2667647662050817499
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14041,6 +14091,8 @@ MonoBehaviour:
   hoverMaterial: {fileID: 2100000, guid: 76618f7490c40334fa7b685859587d2e, type: 2}
   grabbedMaterial: {fileID: 2100000, guid: f5ccd52dc494e054fbe7d7161dcabe25, type: 2}
   hoverTargetMaterial: {fileID: 2100000, guid: 88d63d7114d34244e85c78a16ae32985, type: 2}
+  ghostMaterial: {fileID: 2100000, guid: 8b34dd22d31238a4d826eafb3bc14887, type: 2}
+  targetGhostRenderer: {fileID: 0}
 --- !u!54 &304516307594145050
 Rigidbody:
   m_ObjectHideFlags: 0

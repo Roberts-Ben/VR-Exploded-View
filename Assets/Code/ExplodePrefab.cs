@@ -22,10 +22,14 @@ public class ExplodePrefab : MonoBehaviour
     public Material hoverMaterial;
     public Material grabbedMaterial;
     public Material hoverTargetMaterial;
+    public Material ghostMaterial;
 
     private bool hasMeshCollider = false;
     private BoxCollider boxCollider;
     private MeshCollider meshCollider;
+
+    private int objIndex;
+    public Renderer targetGhostRenderer;
 
     private void Awake()
     {
@@ -53,6 +57,9 @@ public class ExplodePrefab : MonoBehaviour
         defaultMaterials = GetComponentInChildren<Renderer>().materials.ToList();
 
         allRenderers = GetComponentsInChildren<Renderer>();
+
+        objIndex = BuiltObject.instance.interactableObjects.IndexOf(this.transform);
+        targetGhostRenderer = BuiltObject.instance.ghostObjects[objIndex].GetComponent<Renderer>();
     }
 
     private void Update()
@@ -92,7 +99,7 @@ public class ExplodePrefab : MonoBehaviour
 
     private void OnTriggerRelease(BaseInteractionEventArgs arg)
     {
-        if(Vector3.Distance(transform.position, startPosition) < 0.1f && Quaternion.Angle(transform.rotation, startRotation) < 0.5f)
+        if (Vector3.Distance(transform.position, startPosition) < 0.1f && Quaternion.Angle(transform.rotation, startRotation) < 25f)
         {
             transform.SetPositionAndRotation(startPosition, startRotation);
             if(!correctlyPlaced)
@@ -121,6 +128,8 @@ public class ExplodePrefab : MonoBehaviour
             }
             tempR.materials = tempM;
         }
+
+        targetGhostRenderer.material = ghostMaterial;
     }
 
     private void OnTriggerGrab(BaseInteractionEventArgs arg)
@@ -134,6 +143,7 @@ public class ExplodePrefab : MonoBehaviour
             meshCollider.isTrigger = true;
         }
 
+        targetGhostRenderer.material = hoverTargetMaterial; // Doesn't work on children
         StartCoroutine(SelectMaterialUpdate());
     }
     IEnumerator SelectMaterialUpdate()
@@ -153,7 +163,7 @@ public class ExplodePrefab : MonoBehaviour
 
     public void Explode()
     {
-        explodePosition = startPosition + new Vector3(Random.Range(-0.7f, 0.7f), Random.Range(-0.1f, 0.8f), 0);
+        explodePosition = startPosition + new Vector3(Random.Range(-0.7f, 0.7f), Random.Range(-0.1f, 0.5f), 0);
         StartCoroutine(ExplodeMove());
     }
 

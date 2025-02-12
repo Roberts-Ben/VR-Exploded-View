@@ -12,9 +12,13 @@ public class BuiltObject : MonoBehaviour
 
     public Transform BuiltObj;
     public Transform referenceObj;
-    public List<Transform> interactableObjects;
+    public Transform referenceGhostObject;
 
+    public Material ghostMaterial;
+
+    public List<Transform> interactableObjects = new();
     public List<GameObject> assembledObjects = new();
+    public List<Transform> ghostObjects = new();
 
     private XRGrabInteractable grabInteractable;
 
@@ -25,13 +29,11 @@ public class BuiltObject : MonoBehaviour
             instance = this;
         }
 
-        foreach (Transform child in referenceObj)
-        {
-            if (child.GetComponent<XRGrabInteractable>() != null)
-            {
-                interactableObjects.Add(child);
-            }
-        }
+        CreateReferenceList(referenceObj, false);
+
+        referenceGhostObject = Instantiate(referenceObj, referenceObj.transform.position, referenceObj.transform.rotation);
+
+        CreateReferenceList(referenceGhostObject, true);
 
         grabInteractable = GetComponent<XRGrabInteractable>();
 
@@ -39,6 +41,40 @@ public class BuiltObject : MonoBehaviour
         grabInteractable.hoverExited.AddListener(OnHoverExit);
         grabInteractable.selectEntered.AddListener(OnTriggerGrab);
         grabInteractable.selectExited.AddListener(OnTriggerRelease);
+    }
+
+    private void CreateReferenceList(Transform obj, bool isGhost)
+    {
+        foreach (Transform child in obj)
+        {
+            if (child.GetComponent<XRGrabInteractable>() != null)
+            {
+                if(!isGhost)
+                {
+                    interactableObjects.Add(child);
+                }
+                else
+                {
+                    ghostObjects.Add(child);
+
+                    foreach (Renderer r in child.GetComponentsInChildren<Renderer>())
+                    {
+                        Material[] tempM = r.materials;
+                        for (int j = 0; j < tempM.Length; j++)
+                        {
+                            tempM[j] = ghostMaterial;
+                        }
+                        r.materials = tempM;
+                    }
+
+                    Destroy(child.GetComponent<XRGrabInteractable>());
+                    Destroy(child.GetComponent<ExplodePrefab>());
+                    Destroy(child.GetComponent<Rigidbody>());
+                    Destroy(child.GetComponent<MeshCollider>());
+                    Destroy(child.GetComponent<BoxCollider>());
+                }
+            }
+        }
     }
 
     private void OnTriggerRelease(SelectExitEventArgs arg0)
