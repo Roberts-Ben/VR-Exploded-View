@@ -1,10 +1,15 @@
+using Oculus.Interaction;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
 
 public class ExplodePrefab : MonoBehaviour
 {
@@ -13,8 +18,10 @@ public class ExplodePrefab : MonoBehaviour
     public Vector3 explodePosition;
 
     public bool correctlyPlaced = false;
+    public bool isGrabbed = false;
 
     private XRGrabInteractable grabInteractable;
+    public GameObject XRRig;
 
     public Renderer[] allRenderers;
     public Renderer[] allGhostRenderers;
@@ -31,6 +38,14 @@ public class ExplodePrefab : MonoBehaviour
 
     private int objIndex;
     public Transform targetGhost;
+
+    public InputActionReference leftJoystick;
+    public InputActionReference rightJoystick;
+
+    public InputActionReference leftGrip;
+    public InputActionReference leftTrigger;
+    public InputActionReference rightGrip;
+    public InputActionReference rightTrigger;
 
     private void Awake()
     {
@@ -72,9 +87,40 @@ public class ExplodePrefab : MonoBehaviour
 
     private void Update()
     {
-        Vector2 input = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
-        Vector3 rotationVector = 1f * Time.deltaTime * new Vector3(0, input.x, input.y);
-        transform.Rotate(rotationVector, Space.Self);
+        if (isGrabbed)
+        {
+            Vector2 _leftJoystick = leftJoystick.action.ReadValue<Vector2>();
+            Vector2 _rightJoystick = rightJoystick.action.ReadValue<Vector2>();
+
+            if(_leftJoystick.x > 0.1f || _leftJoystick.y < -0.1f)
+            {
+                grabInteractable.trackPosition = false;
+            }
+            else
+            {
+                grabInteractable.trackPosition = true;
+            }
+            if (_rightJoystick.x > 0.1f || _rightJoystick.y < -0.1f)
+            {
+                grabInteractable.trackRotation = false;
+            }
+            else
+            {
+                grabInteractable.trackRotation = true;
+            }
+
+            Vector3 movementVector = 0.5f * Time.deltaTime * new Vector3(0f, 0f, -_leftJoystick.y);
+            Vector3 rotationVector = 60f * Time.deltaTime * new Vector3(_rightJoystick.y, _rightJoystick.x, 0f);
+
+            transform.Translate(movementVector, Space.Self);
+            transform.Rotate(rotationVector, Space.Self);
+        }
+        else
+        {
+            grabInteractable.trackPosition = true;
+            grabInteractable.trackRotation = true;
+        }
+
     }
 
     private void OnHoverEnter(BaseInteractionEventArgs arg)
@@ -107,6 +153,11 @@ public class ExplodePrefab : MonoBehaviour
 
     private void OnTriggerRelease(BaseInteractionEventArgs arg)
     {
+        isGrabbed = false;
+        
+        XRRig.GetComponent<ContinuousMoveProvider>().enabled = true;
+        XRRig.GetComponent<ContinuousTurnProvider>().enabled = true;
+
         if (!correctlyPlaced)
         {
             Debug.LogWarning(Quaternion.Angle(transform.rotation, startRotation));
@@ -137,7 +188,7 @@ public class ExplodePrefab : MonoBehaviour
             Material[] tempM = tempR.materials;
             for (int j = 0; j < tempM.Length; j++)
             {
-                tempM[j] = hoverMaterial;
+                tempM[j] = defaultMaterials[j];
             }
             tempR.materials = tempM;
         }
@@ -156,6 +207,11 @@ public class ExplodePrefab : MonoBehaviour
 
     private void OnTriggerGrab(BaseInteractionEventArgs arg)
     {
+        isGrabbed = true;
+
+        XRRig.GetComponent<ContinuousMoveProvider>().enabled = false;
+        XRRig.GetComponent<ContinuousTurnProvider>().enabled = false;
+
         if (!hasMeshCollider)
         {
             boxCollider.isTrigger = true;
