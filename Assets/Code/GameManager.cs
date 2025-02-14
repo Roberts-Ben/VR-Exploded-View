@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class GameManager : MonoBehaviour
 {

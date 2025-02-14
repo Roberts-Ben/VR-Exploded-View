@@ -1,21 +1,18 @@
-using Oculus.Interaction;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Inputs;
-using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
 
 public class ExplodePrefab : MonoBehaviour
 {
-    public Vector3 startPosition;
-    public Quaternion startRotation;
-    public Vector3 explodePosition;
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+    private Vector3 explodePosition;
 
     public bool correctlyPlaced = false;
     public bool isGrabbed = false;
@@ -39,6 +36,8 @@ public class ExplodePrefab : MonoBehaviour
     private int objIndex;
     public Transform targetGhost;
 
+    private Rigidbody rb;
+
     public InputActionReference leftJoystick;
     public InputActionReference rightJoystick;
 
@@ -46,6 +45,12 @@ public class ExplodePrefab : MonoBehaviour
     public InputActionReference leftTrigger;
     public InputActionReference rightGrip;
     public InputActionReference rightTrigger;
+
+    public GameObject leftController;
+    public GameObject rightController;
+    private Vector3 targetControllerPos;
+    private bool leftControllerGrabbed;
+    private bool rightControllerGrabbed;
 
     private void Awake()
     {
@@ -59,7 +64,8 @@ public class ExplodePrefab : MonoBehaviour
 
     private void Start()
     {
-        boxCollider = transform.GetComponent<BoxCollider>(); // Try GetCollider?
+        rb = GetComponent<Rigidbody>();
+        boxCollider = transform.GetComponent<BoxCollider>(); // Try GetCollider instead?
 
         if (boxCollider == null)
         {
@@ -92,35 +98,30 @@ public class ExplodePrefab : MonoBehaviour
             Vector2 _leftJoystick = leftJoystick.action.ReadValue<Vector2>();
             Vector2 _rightJoystick = rightJoystick.action.ReadValue<Vector2>();
 
-            if(_leftJoystick.x > 0.1f || _leftJoystick.y < -0.1f)
+            if(_leftJoystick.x != 0 || _leftJoystick.y != 0 || _rightJoystick.x != 0 || _rightJoystick.y != 0)
             {
-                grabInteractable.trackPosition = false;
-            }
-            else
-            {
-                grabInteractable.trackPosition = true;
-            }
-            if (_rightJoystick.x > 0.1f || _rightJoystick.y < -0.1f)
-            {
+                grabInteractable.trackPosition = false; // Need to enable these without resetting pos/rotation if held
                 grabInteractable.trackRotation = false;
-            }
-            else
-            {
-                grabInteractable.trackRotation = true;
+
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
             }
 
             Vector3 movementVector = 0.5f * Time.deltaTime * new Vector3(0f, 0f, -_leftJoystick.y);
-            Vector3 rotationVector = 60f * Time.deltaTime * new Vector3(_rightJoystick.y, _rightJoystick.x, 0f);
+            Vector3 rotationVector = 180f * Time.deltaTime * new Vector3(-_rightJoystick.y, -_rightJoystick.x, 0f);
 
-            transform.Translate(movementVector, Space.Self);
+            if (leftControllerGrabbed)
+            {
+                targetControllerPos = leftController.transform.position;
+            }
+            else if (rightControllerGrabbed)
+            {
+                targetControllerPos = rightController.transform.position;
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, targetControllerPos, movementVector.z * 50f * Time.deltaTime);
             transform.Rotate(rotationVector, Space.Self);
         }
-        else
-        {
-            grabInteractable.trackPosition = true;
-            grabInteractable.trackRotation = true;
-        }
-
     }
 
     private void OnHoverEnter(BaseInteractionEventArgs arg)
@@ -154,9 +155,21 @@ public class ExplodePrefab : MonoBehaviour
     private void OnTriggerRelease(BaseInteractionEventArgs arg)
     {
         isGrabbed = false;
-        
+
+        if (leftGrip.action.ReadValue<float>() < 0.1f)
+        {
+            leftControllerGrabbed = false;
+        }
+        if (rightGrip.action.ReadValue<float>() < 0.1f)
+        {
+            rightControllerGrabbed = false;
+        }
+
         XRRig.GetComponent<ContinuousMoveProvider>().enabled = true;
         XRRig.GetComponent<ContinuousTurnProvider>().enabled = true;
+
+        grabInteractable.trackPosition = true;
+        grabInteractable.trackRotation = true;
 
         if (!correctlyPlaced)
         {
@@ -167,10 +180,7 @@ public class ExplodePrefab : MonoBehaviour
                 correctlyPlaced = true;
                 transform.SetPositionAndRotation(startPosition, startRotation);
 
-                Destroy(GetComponent<XRGrabInteractable>());
-                Destroy(GetComponent<Rigidbody>());
-                Destroy(GetComponent<MeshCollider>());
-                Destroy(GetComponent<BoxCollider>());
+                UpdateComponenets(false);
             }
         }
 
@@ -208,6 +218,21 @@ public class ExplodePrefab : MonoBehaviour
     private void OnTriggerGrab(BaseInteractionEventArgs arg)
     {
         isGrabbed = true;
+
+        if(leftGrip.action.ReadValue<float>() > 0.1f)
+        {
+            if(!rightControllerGrabbed)
+            {
+                leftControllerGrabbed = true;
+            }
+        }
+        if(rightGrip.action.ReadValue<float>() > 0.1f)
+        {
+            if (!leftControllerGrabbed)
+            {
+                rightControllerGrabbed = true;
+            }
+        }
 
         XRRig.GetComponent<ContinuousMoveProvider>().enabled = false;
         XRRig.GetComponent<ContinuousTurnProvider>().enabled = false;
@@ -250,13 +275,36 @@ public class ExplodePrefab : MonoBehaviour
 
     public void Explode()
     {
+        StopAllCoroutines();
+        UpdateComponenets(true);
+        
         explodePosition = startPosition + new Vector3(Random.Range(-0.7f, 0.7f), Random.Range(-0.1f, 0.5f), 0);
+
         StartCoroutine(ExplodeMove());
     }
 
     public void Reset()
     {
+        StopAllCoroutines();
+        UpdateComponenets(false);
+
         transform.SetPositionAndRotation(startPosition, startRotation);
+        
+        correctlyPlaced = false;
+        isGrabbed = false;
+    }
+
+    private void UpdateComponenets(bool enable)
+    {
+        GetComponent<XRGrabInteractable>().enabled = enable;
+        if (boxCollider != null)
+        {
+            GetComponent<BoxCollider>().enabled = enable;
+        }
+        else
+        {
+            GetComponent<MeshCollider>().enabled = enable;
+        }
     }
 
     IEnumerator ExplodeMove()
